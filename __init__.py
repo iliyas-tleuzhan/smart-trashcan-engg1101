@@ -1,0 +1,2 @@
+"""Smart bin subsystem package."""
+
