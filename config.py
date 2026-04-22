@@ -1,0 +1,82 @@
+"""Configuration constants for the smart bin subsystem."""
+
+import os
+from pathlib import Path
+
+# GPIO pins for HC-SR04
+TRIG_PIN = 23
+ECHO_PIN = 24
+
+# Servo
+SERVO_PIN = 18
+SERVO_OPEN_VALUE = 0.45
+SERVO_CLOSED_VALUE = -0.75
+
+# HX711
+HX711_DT_PIN = 5
+HX711_SCK_PIN = 6
+WEIGHT_CHANGE_THRESHOLD = 30000
+STABLE_TIME_SEC = 1.2
+STABLE_SAMPLE_COUNT = 4
+LID_CLOSE_DELAY_SEC = 1.5
+WEIGHT_READ_SAMPLES = 5
+BASELINE_READ_SAMPLES = 10
+STABLE_READ_SAMPLES = 5
+
+# OLED display settings
+OLED_I2C_ADDRESS = 0x3C
+OLED_WIDTH = 128
+OLED_HEIGHT = 64
+OLED_RESET_PIN = None
+
+# Distance / presence detection settings
+DISTANCE_THRESHOLD_CM = 10.0
+MEASUREMENT_INTERVAL_SEC = 0.2
+DISTANCE_SENSOR_MAX_CM = 200.0
+SMOOTHING_WINDOW = 5
+PRESENT_CONFIRM_COUNT = 2
+ABSENT_CONFIRM_COUNT = 4
+MAX_VALID_DISTANCE_CM = 400.0
+
+# Timing
+LID_SETTLE_SEC = 1.0
+MIN_OPEN_TIME_SEC = 2.0
+AUTO_CLOSE_TIME_SEC = 10.0
+
+# Database
+DATA_DIR = Path(__file__).resolve().parent / "data"
+SQLITE_DB_PATH = DATA_DIR / "smart_bin_events.db"
+BASEROW_API_URL = os.getenv("BASEROW_API_URL", "https://api.baserow.io")
+BASEROW_DATABASE_ID = os.getenv("BASEROW_DATABASE_ID", "423532")
+BASEROW_TABLE_ID = os.getenv("BASEROW_TABLE_ID", "942811")
+BASEROW_TOKEN = os.getenv("BASEROW_TOKEN", "mHHXbuVM64h8dcjyQx1Xkq8qKI0vkz60")
+
+# Speech settings
+SPEECH_COOLDOWN_SEC = 10.0
+ESPEAK_COMMAND = "espeak-ng"
+ESPEAK_SPEED_WPM = 155
+ESPEAK_VOICE = "en"
+
+# Display messages
+STARTUP_LINE_1 = "System ready"
+STARTUP_LINE_2 = "Smart bin"
+STARTUP_DISPLAY_SEC = 2.0
+
+IDLE_LINE_1 = "Waiting..."
+IDLE_LINE_2 = ""
+IDLE_LINE_3 = ""
+
+DETECTED_LINE_1 = "Opening lid"
+DETECTED_LINE_2 = ""
+DETECTED_LINE_3 = ""
+
+OPEN_LINE_1 = "Lid open"
+OPEN_LINE_2 = "Drop trash"
+OPEN_LINE_3 = ""
+
+CLOSING_LINE_1 = "Closing lid"
+CLOSING_LINE_2 = ""
+CLOSING_LINE_3 = ""
+
+# Spoken messages
+PERSON_DETECTED_SPOKEN_TEXT = "Bin opened"
