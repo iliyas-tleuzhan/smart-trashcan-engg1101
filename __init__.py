@@ -1,2 +1,1 @@
-"""Smart bin subsystem package."""
-
+"""Smart bin user-detection modules."""

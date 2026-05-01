@@ -1,6 +1,6 @@
 """Minimal entry point for the smart bin subsystem."""
 
-from smart_bin.controller import SmartBinController
+from controller import SmartBinController
 
 
 def main() -> None:

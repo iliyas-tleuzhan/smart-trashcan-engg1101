@@ -6,7 +6,7 @@ import subprocess
 import threading
 import time
 
-from smart_bin import config
+import config
 
 
 class SpeakerOutput:
@@ -54,20 +54,6 @@ class SpeakerOutput:
 
         thread = threading.Thread(target=self._run_speech, args=(text,), daemon=True)
         thread.start()
-        return True
-
-    def speak_blocking(self, text: str, force: bool = True) -> bool:
-        """Speak text synchronously so the caller can sequence actions."""
-        with self._lock:
-            now = time.monotonic()
-            if not force:
-                if self._speaking or (now - self._last_spoken_at) < self.cooldown_sec:
-                    return False
-
-            self._speaking = True
-            self._last_spoken_at = now
-
-        self._run_speech(text)
         return True
 
     def announce_person_detected(self) -> bool:

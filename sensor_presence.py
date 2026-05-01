@@ -8,7 +8,7 @@ from typing import Deque, Optional
 
 from gpiozero import DistanceSensor
 
-from smart_bin import config
+import config
 
 
 class UltrasonicPresenceSensor:
@@ -25,7 +25,6 @@ class UltrasonicPresenceSensor:
         trigger_pin: int = config.TRIG_PIN,
         echo_pin: int = config.ECHO_PIN,
         threshold_cm: float = config.DISTANCE_THRESHOLD_CM,
-        max_distance_cm: float = config.DISTANCE_SENSOR_MAX_CM,
         smoothing_window: int = config.SMOOTHING_WINDOW,
         present_confirm_count: int = config.PRESENT_CONFIRM_COUNT,
         absent_confirm_count: int = config.ABSENT_CONFIRM_COUNT,
@@ -36,15 +35,12 @@ class UltrasonicPresenceSensor:
         self.absent_confirm_count = absent_confirm_count
         self.max_valid_distance_cm = max_valid_distance_cm
 
-        # Keep the same simple DistanceSensor style as your working test script.
         self.sensor = DistanceSensor(echo=echo_pin, trigger=trigger_pin)
 
         self._samples: Deque[float] = deque(maxlen=smoothing_window)
         self._presence_counter = 0
         self._absence_counter = 0
         self._person_present = False
-        self._last_raw_distance_cm: Optional[float] = None
-        self._last_smoothed_distance_cm: Optional[float] = None
 
     def get_distance_cm(self) -> Optional[float]:
         """Return the latest raw distance in cm, or None if invalid."""
@@ -57,7 +53,6 @@ class UltrasonicPresenceSensor:
         if distance_cm <= 0 or distance_cm > self.max_valid_distance_cm:
             return None
 
-        self._last_raw_distance_cm = distance_cm
         return distance_cm
 
     def get_smoothed_distance_cm(self, new_distance_cm: Optional[float]) -> Optional[float]:
@@ -66,14 +61,12 @@ class UltrasonicPresenceSensor:
             self._samples.append(new_distance_cm)
 
         if not self._samples:
-            self._last_smoothed_distance_cm = None
             return None
 
-        self._last_smoothed_distance_cm = statistics.median(self._samples)
-        return self._last_smoothed_distance_cm
+        return statistics.median(self._samples)
 
     def is_person_present(self, distance_cm: Optional[float]) -> bool:
-        """Check if a distance reading counts as person present."""
+        """Check whether a distance reading means someone is in front of the bin."""
         return distance_cm is not None and distance_cm < self.threshold_cm
 
     def update_presence_state(self) -> dict:

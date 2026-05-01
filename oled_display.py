@@ -8,7 +8,7 @@ import digitalio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 
-from smart_bin import config
+import config
 
 
 class OledDisplay:
@@ -26,7 +26,6 @@ class OledDisplay:
         self.font = ImageFont.load_default()
         self._last_lines = ("", "", "")
 
-        # Same I2C style as your working OLED test code.
         i2c = busio.I2C(board.SCL, board.SDA)
 
         reset = None
@@ -62,11 +61,7 @@ class OledDisplay:
 
     def show_idle(self) -> None:
         """Show the configured idle screen."""
-        self.show_message(
-            config.IDLE_LINE_1,
-            config.IDLE_LINE_2,
-            config.IDLE_LINE_3,
-        )
+        self.show_message(config.IDLE_LINE_1, config.IDLE_LINE_2, config.IDLE_LINE_3)
 
     def show_detected(self, distance: float | None = None) -> None:
         """Show the configured detected screen, optionally including distance."""
@@ -74,11 +69,7 @@ class OledDisplay:
         if distance is not None:
             line3 = f"Dist: {distance:.1f} cm"
 
-        self.show_message(
-            config.DETECTED_LINE_1,
-            config.DETECTED_LINE_2,
-            line3,
-        )
+        self.show_message(config.DETECTED_LINE_1, config.DETECTED_LINE_2, line3)
 
     def clear(self) -> None:
         """Clear the display."""
